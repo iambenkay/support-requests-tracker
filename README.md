@@ -128,3 +128,213 @@ responsible for server based configurations.
 ### DEPENDENCIES
 All dependencies used in this project are freely available at npmjs.com  
 They are located under the dependencies section in `package.json`
+
+## REST API REFERENCE
+NB: The header `Content-Type` should be `application/json` unless specified otherwise.
+### LOGIN
+```
+POST /api/v1/login
+
+{
+    "username": "kayode",
+    "pin": "0000"
+}
+
+Response
+{
+    "error": false,
+    "message": "User was created successfully",
+    "data": {
+        "_id": "6074ce017949c4317ee9e2bc",
+        "username": "benjamin",
+        "role": "SUPPORT_AGENT",
+        "createdAt": "2021-04-12T22:47:29.673Z",
+        "updatedAt": "2021-04-12T22:47:29.673Z",
+        "__v": 0
+    },
+    "token": "<token>"
+}
+```
+### CREATE TICKET
+```
+POST /api/v1/tickets
+Authorization: Bearer
+
+{
+    "subject": "Issue related to logging in",
+    "body": "I have been unable to login for the past two weeks. It keeps returning the error 'username does not exist'. Please fix this"
+}
+
+Response
+{
+    "error": false,
+    "message": "Ticket was created successfully",
+    "data": {
+        "status": "UNATTENDED",
+        "_id": "6074fa67a59f1b34511af28d",
+        "subject": "Issue related to logging in",
+        "body": "I have been unable to login for the past two weeks. It keeps returning the error 'username does not exist'. Please fix this",
+        "ticketId": 5,
+        "author": "6074ce017949c4317ee9e2bd",
+        "createdAt": "2021-04-13T01:56:55.986Z",
+        "updatedAt": "2021-04-13T01:56:55.986Z",
+        "__v": 0
+    }
+}
+```
+### GET TICKETS
+```
+GET /api/v1/tickets
+Authorization: Bearer
+
+Response
+{
+    "error": false,
+    "message": "Tickets retrieved successfully",
+    "data": [
+        {
+            "status": "RESOLVED",
+            "_id": "6074fa5ca59f1b34511af289",
+            "subject": "Issue related to logging in",
+            "body": "I have been unable to login for the past two weeks. It keeps returning the error 'username does not exist'. Please fix this",
+            "ticketId": 1,
+            "author": "6074ce017949c4317ee9e2bd",
+            "createdAt": "2021-04-13T01:56:44.234Z",
+            "updatedAt": "2021-04-13T02:00:15.952Z",
+            "__v": 0,
+            "resolvedAt": "2021-04-13T02:00:15.949Z"
+        },
+        {
+            "status": "UNATTENDED",
+            "_id": "6074fa62a59f1b34511af28a",
+            "subject": "Issue related to logging in",
+            "body": "I have been unable to login for the past two weeks. It keeps returning the error 'username does not exist'. Please fix this",
+            "ticketId": 2,
+            "author": "6074ce017949c4317ee9e2bd",
+            "createdAt": "2021-04-13T01:56:50.430Z",
+            "updatedAt": "2021-04-13T01:56:50.430Z",
+            "__v": 0
+        }
+    ]
+}
+```
+### GET TICKET BY TICKET ID
+```
+GET /api/v1/tickets/:ticketId
+Authorization: Bearer
+
+Response
+{
+    "error": false,
+    "message": "Ticket retrieved successfully",
+    "data": {
+        "status": "RESOLVED",
+        "_id": "6074fa5ca59f1b34511af289",
+        "subject": "Issue related to logging in",
+        "body": "I have been unable to login for the past two weeks. It keeps returning the error 'username does not exist'. Please fix this",
+        "ticketId": 1,
+        "author": "6074ce017949c4317ee9e2bd",
+        "createdAt": "2021-04-13T01:56:44.234Z",
+        "updatedAt": "2021-04-13T02:00:15.952Z",
+        "__v": 0,
+        "resolvedAt": "2021-04-13T02:00:15.949Z"
+    }
+}
+```
+### UPDATE TICKET BY TICKET ID
+```
+PUT /api/v1/tickets/:ticketId
+Authorization: Bearer
+
+{
+    "status": "RESOLVED"
+}
+
+Response
+{
+    "error": false,
+    "message": "Ticket updated successfully",
+    "data": null
+}
+```
+### GENERATE RESOLVED TICKETS REPORT
+```
+GET /api/v1/tickets/resolved-report
+Authorization: Bearer
+
+Response
+---- CSV ENCODED STRING ----
+```
+### CREATE TICKET REPLY
+```
+POST /api/v1/tickets/:id/replies
+Authorization: Bearer
+
+{
+    "body": "That actually worked. Greatttt!! Thanks Customer Service"
+}
+
+Response
+{
+    "error": false,
+    "message": "Reply was created successfully",
+    "data": {
+        "_id": "6074faf873e20b3458ceb2ec",
+        "body": "That actually worked. Greatttt!! Thanks Customer Service",
+        "author": "6074ce017949c4317ee9e2bd",
+        "ticketId": "6074fa5ca59f1b34511af289",
+        "createdAt": "2021-04-13T01:59:20.044Z",
+        "updatedAt": "2021-04-13T01:59:20.044Z",
+        "__v": 0
+    }
+}
+```
+### GET TICKET REPLIES
+```
+GET /api/v1/tickets/:id/replies
+Authorization: Bearer
+
+Response
+{
+    "error": false,
+    "message": "Replies retrieved successfully",
+    "data": [
+        {
+            "_id": "6074fa8ba59f1b34511af28e",
+            "body": "Hello! can you describe your issue more clearly?",
+            "author": "6074ce017949c4317ee9e2bc",
+            "ticketId": "6074fa5ca59f1b34511af289",
+            "createdAt": "2021-04-13T01:57:31.027Z",
+            "updatedAt": "2021-04-13T01:57:31.027Z",
+            "__v": 0
+        },
+        {
+            "_id": "6074faafa59f1b34511af28f",
+            "body": "Yes! I have been stuck on the login screen for a while. It shows me a red indicator and closes the tab",
+            "author": "6074ce017949c4317ee9e2bd",
+            "ticketId": "6074fa5ca59f1b34511af289",
+            "createdAt": "2021-04-13T01:58:07.731Z",
+            "updatedAt": "2021-04-13T01:58:07.731Z",
+            "__v": 0
+        },
+        {
+            "_id": "6074fae173e20b3458ceb2eb",
+            "body": "can you try logging into the vendor console?",
+            "author": "6074ce017949c4317ee9e2bc",
+            "ticketId": "6074fa5ca59f1b34511af289",
+            "createdAt": "2021-04-13T01:58:57.688Z",
+            "updatedAt": "2021-04-13T01:58:57.688Z",
+            "__v": 0
+        },
+        {
+            "_id": "6074faf873e20b3458ceb2ec",
+            "body": "That actually worked. Greatttt!! Thanks Customer Service",
+            "author": "6074ce017949c4317ee9e2bd",
+            "ticketId": "6074fa5ca59f1b34511af289",
+            "createdAt": "2021-04-13T01:59:20.044Z",
+            "updatedAt": "2021-04-13T01:59:20.044Z",
+            "__v": 0
+        }
+    ]
+}
+```

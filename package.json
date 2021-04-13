@@ -1,5 +1,5 @@
 {
-  "name": "fliqpay-test",
+  "name": "support-requests-tracker",
   "version": "1.0.0",
   "main": "dist/index.js",
   "repository": "git@github.com:iambenkay/fliqpay-test.git",
